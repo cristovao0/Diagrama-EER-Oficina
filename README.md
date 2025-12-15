@@ -1,128 +1,118 @@
-# Diagrama EER Oficina
+# Sistema de Controle de Ordens de Serviço – Oficina Mecânica
 
-Sistema de Controle de Ordens de Serviço – Oficina Mecânica
-Visão Geral
+## Visão Geral
 
-Este projeto apresenta o modelo conceitual de um sistema de controle e gerenciamento de Ordens de Serviço (OS) para uma oficina mecânica.
+Este projeto apresenta o **modelo conceitual de um sistema de controle e gerenciamento de Ordens de Serviço (OS)** para uma oficina mecânica.  
 O objetivo do sistema é organizar o fluxo de atendimento de veículos, desde a entrada do cliente na oficina até a conclusão dos serviços executados, garantindo rastreabilidade, clareza e consistência das informações.
 
 O diagrama foi construído com base em uma narrativa fornecida no desafio, buscando representar fielmente as regras de negócio descritas, ao mesmo tempo em que mantém uma modelagem limpa e sem redundâncias.
 
-Contexto do Sistema
+---
+
+## Contexto do Sistema
 
 No contexto da oficina mecânica:
 
-Clientes levam seus veículos para conserto ou revisões periódicas.
+- Clientes levam seus veículos para conserto ou revisões periódicas
+- Cada atendimento gera uma **Ordem de Serviço**
+- Uma **equipe de mecânicos** é responsável por avaliar e executar os serviços
+- Uma OS pode conter **um ou mais serviços**
+- O cliente deve **autorizar a execução** dos serviços
+- Ao final, a OS possui status, datas relevantes e valor total calculado
 
-Cada atendimento gera uma Ordem de Serviço, que registra todas as informações do trabalho.
+---
 
-Uma equipe de mecânicos é responsável por avaliar e executar os serviços da OS.
+## Principais Entidades
 
-A OS pode conter um ou mais serviços, que representam os trabalhos efetivamente realizados.
+### Proprietário
 
-O cliente deve autorizar a execução dos serviços antes da conclusão.
-
-Ao final, a OS possui status, datas relevantes e o valor total calculado.
-
-Principais Entidades e Responsabilidades
-Proprietário
-
-Representa o cliente da oficina.
+Representa o cliente da oficina.  
 Um proprietário pode possuir um ou mais veículos.
 
-Principais informações:
+**Principais informações:**
+- Nome
+- Endereço
 
-Nome
+---
 
-Endereço
+### Veículo
 
-Veículo
-
-Representa o veículo levado à oficina para atendimento.
+Representa o veículo levado à oficina para atendimento.  
 Cada veículo pertence a um único proprietário, mas pode ter várias Ordens de Serviço ao longo do tempo.
 
-Principais informações:
+**Principais informações:**
+- Marca
+- Modelo
+- Quilometragem
 
-Marca
+---
 
-Modelo
+### Ordem de Serviço
 
-Quilometragem
-
-Ordem de Serviço
-
-É a entidade central do sistema e representa cada atendimento realizado pela oficina.
+Entidade central do sistema, representando cada atendimento realizado pela oficina.
 
 A Ordem de Serviço:
+- Está associada a **um veículo**
+- É atribuída a **uma equipe de mecânicos**
+- Possui **um ou mais serviços executados**
+- Registra informações essenciais do processo
 
-Está associada a um veículo
+**Principais informações:**
+- Data de emissão
+- Data de entrega ou conclusão
+- Status da OS
+- Valor total
+- Autorização do cliente
 
-É atribuída a uma equipe de mecânicos
+---
 
-Possui um ou mais serviços executados
-
-Registra informações essenciais do processo
-
-Principais informações:
-
-Data de emissão
-
-Data de entrega/conclusão
-
-Status da OS
-
-Valor total do serviço
-
-Autorização do cliente para execução
-
-Equipe de Mecânicos
+### Equipe de Mecânicos
 
 Representa um grupo de mecânicos que atua em conjunto na execução das Ordens de Serviço.
 
 Uma equipe:
+- Pode atender várias Ordens de Serviço
+- É composta por um ou mais mecânicos
 
-Pode atender várias Ordens de Serviço ao longo do tempo
+---
 
-É composta por um ou mais mecânicos
+### Mecânico
 
-Mecânico
-
-Representa o profissional que executa os serviços na oficina.
+Representa o profissional responsável pela execução dos serviços na oficina.  
 Cada mecânico pertence a uma equipe.
 
-Principais informações:
+**Principais informações:**
+- Nome
+- Endereço
+- Especialidade
 
-Nome
+---
 
-Endereço
+### Serviços da OS
 
-Especialidade
-
-Serviços da OS
-
-Representa os serviços efetivamente incluídos em uma Ordem de Serviço.
-Essa entidade não funciona como um catálogo genérico de serviços, mas sim como o registro dos serviços executados dentro de uma OS específica.
+Representa os **serviços efetivamente incluídos em uma Ordem de Serviço**.  
+Não funciona como um catálogo genérico de serviços, mas como o registro dos serviços executados em uma OS específica.
 
 Cada serviço está sempre associado a uma única Ordem de Serviço.
 
-Principais informações:
+**Principais informações:**
+- Descrição do serviço executado
 
-Descrição do serviço executado
+---
 
-Decisões de Modelagem
+## Decisões de Modelagem
 
-Algumas decisões importantes foram tomadas durante a construção do modelo:
+Durante a construção do modelo, foram adotadas as seguintes decisões:
 
-A Equipe de Mecânicos foi associada diretamente à Ordem de Serviço, e não ao veículo, permitindo que um mesmo veículo seja atendido por equipes diferentes em visitas distintas.
+- A **Equipe de Mecânicos foi associada diretamente à Ordem de Serviço**, permitindo que um mesmo veículo seja atendido por equipes diferentes em visitas distintas
+- Foram evitadas **chaves estrangeiras redundantes**, garantindo um modelo mais limpo e consistente
+- A autorização do cliente foi modelada como um atributo da Ordem de Serviço
+- A cardinalidade mínima entre Ordem de Serviço e Serviços pode ser zero no início do processo (fase de triagem), embora o diagrama indique 1..*, devido a limitações da ferramenta de modelagem
 
-Foram evitadas chaves estrangeiras redundantes, garantindo que cada entidade conheça apenas seus relacionamentos diretos.
+---
 
-A autorização do cliente foi modelada como um atributo da Ordem de Serviço, por se tratar de uma decisão vinculada à execução daquele atendimento específico.
+## Considerações Finais
 
-A cardinalidade mínima entre Ordem de Serviço e Serviços pode ser zero no início do processo (fase de triagem), apesar de o diagrama indicar 1..*, devido a limitações da ferramenta de modelagem. Essa regra é tratada como uma decisão de negócio.
+Este modelo conceitual busca representar de forma clara e organizada o funcionamento de uma oficina mecânica, respeitando as regras de negócio propostas no desafio.
 
-Considerações Finais
-
-Este modelo conceitual busca refletir de forma clara e organizada o funcionamento de uma oficina mecânica, priorizando consistência, simplicidade e aderência à narrativa proposta no desafio.
-
-O diagrama serve como base sólida para futuras etapas do projeto, como a modelagem lógica e a implementação do banco de dados.
+O diagrama serve como base para futuras etapas do projeto, como a modelagem lógica e a implementação do banco de dados.
